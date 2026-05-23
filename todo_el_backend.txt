@@ -1,0 +1,1151 @@
+
+=== FILE: src/main/java/com/gestornotas/controller/SectionGroupController.java ===
+
+package com.gestornotas.controller;
+
+import com.gestornotas.model.entity.SectionGroup;
+import com.gestornotas.service.SectionGroupService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/api/sectionGroups")
+public class SectionGroupController {
+    private final SectionGroupService service;
+
+    public SectionGroupController(SectionGroupService service) {
+        this.service = service;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<SectionGroup>> getAll() {
+        return ResponseEntity.ok(service.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<SectionGroup> getById(@PathVariable UUID id) {
+        return ResponseEntity.ok(service.findById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<SectionGroup> create(@RequestBody SectionGroup sectionGroup) {
+        return ResponseEntity.ok(service.save(sectionGroup));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<SectionGroup> update(@PathVariable UUID id, @RequestBody SectionGroup sectionGroup) {
+        // En una app real, mapearíamos el ID al objeto antes de guardar
+        return ResponseEntity.ok(service.save(sectionGroup));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+        service.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+}
+
+=== FILE: src/main/java/com/gestornotas/controller/PageContentBlockController.java ===
+
+package com.gestornotas.controller;
+
+import com.gestornotas.model.entity.PageContentBlock;
+import com.gestornotas.service.PageContentBlockService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/api/pageContentBlocks")
+public class PageContentBlockController {
+    private final PageContentBlockService service;
+
+    public PageContentBlockController(PageContentBlockService service) {
+        this.service = service;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PageContentBlock>> getAll() {
+        return ResponseEntity.ok(service.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PageContentBlock> getById(@PathVariable UUID id) {
+        return ResponseEntity.ok(service.findById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<PageContentBlock> create(@RequestBody PageContentBlock pageContentBlock) {
+        return ResponseEntity.ok(service.save(pageContentBlock));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PageContentBlock> update(@PathVariable UUID id, @RequestBody PageContentBlock pageContentBlock) {
+        // En una app real, mapearíamos el ID al objeto antes de guardar
+        return ResponseEntity.ok(service.save(pageContentBlock));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+        service.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+}
+
+=== FILE: src/main/java/com/gestornotas/controller/NotebookController.java ===
+
+package com.gestornotas.controller;
+
+import com.gestornotas.model.entity.Notebook;
+import com.gestornotas.service.NotebookService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@CrossOrigin(origins = "http://localhost:4200") // 👈 Autoriza a tu Angular a consumir este endpoint
+@RequestMapping("/api/notebooks")
+public class NotebookController {
+    private final NotebookService service;
+
+    public NotebookController(NotebookService service) {
+        this.service = service;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Notebook>> getAll() {
+        return ResponseEntity.ok(service.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Notebook> getById(@PathVariable UUID id) {
+        return ResponseEntity.ok(service.findById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<Notebook> create(@RequestBody Notebook notebook) {
+        return ResponseEntity.ok(service.save(notebook));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Notebook> update(@PathVariable UUID id, @RequestBody Notebook notebook) {
+        return ResponseEntity.ok(service.save(notebook));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+        service.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+}
+=== FILE: src/main/java/com/gestornotas/controller/UserController.java ===
+
+package com.gestornotas.controller;
+
+import com.gestornotas.model.entity.User;
+import com.gestornotas.service.UserService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+    private final UserService service;
+
+    public UserController(UserService service) {
+        this.service = service;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<User>> getAll() {
+        return ResponseEntity.ok(service.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getById(@PathVariable UUID id) {
+        return ResponseEntity.ok(service.findById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<User> create(@RequestBody User user) {
+        return ResponseEntity.ok(service.save(user));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<User> update(@PathVariable UUID id, @RequestBody User user) {
+        // En una app real, mapearíamos el ID al objeto antes de guardar
+        return ResponseEntity.ok(service.save(user));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+        service.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+}
+
+=== FILE: src/main/java/com/gestornotas/controller/PageController.java ===
+
+package com.gestornotas.controller;
+
+import com.gestornotas.model.entity.Page;
+import com.gestornotas.service.PageService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/api/pages")
+public class PageController {
+    private final PageService service;
+
+    public PageController(PageService service) {
+        this.service = service;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Page>> getAll() {
+        return ResponseEntity.ok(service.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Page> getById(@PathVariable UUID id) {
+        return ResponseEntity.ok(service.findById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<Page> create(@RequestBody Page page) {
+        return ResponseEntity.ok(service.save(page));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Page> update(@PathVariable UUID id, @RequestBody Page page) {
+        // En una app real, mapearíamos el ID al objeto antes de guardar
+        return ResponseEntity.ok(service.save(page));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+        service.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+}
+
+=== FILE: src/main/java/com/gestornotas/controller/SectionController.java ===
+
+package com.gestornotas.controller;
+
+import com.gestornotas.model.entity.Section;
+import com.gestornotas.service.SectionService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/api/sections")
+public class SectionController {
+    private final SectionService service;
+
+    public SectionController(SectionService service) {
+        this.service = service;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Section>> getAll() {
+        return ResponseEntity.ok(service.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Section> getById(@PathVariable UUID id) {
+        return ResponseEntity.ok(service.findById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<Section> create(@RequestBody Section section) {
+        return ResponseEntity.ok(service.save(section));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Section> update(@PathVariable UUID id, @RequestBody Section section) {
+        // En una app real, mapearíamos el ID al objeto antes de guardar
+        return ResponseEntity.ok(service.save(section));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+        service.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+}
+
+=== FILE: src/main/java/com/gestornotas/controller/TagController.java ===
+
+package com.gestornotas.controller;
+
+import com.gestornotas.model.entity.Tag;
+import com.gestornotas.service.TagService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/api/tags")
+public class TagController {
+    private final TagService service;
+
+    public TagController(TagService service) {
+        this.service = service;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Tag>> getAll() {
+        return ResponseEntity.ok(service.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Tag> getById(@PathVariable UUID id) {
+        return ResponseEntity.ok(service.findById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<Tag> create(@RequestBody Tag tag) {
+        return ResponseEntity.ok(service.save(tag));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Tag> update(@PathVariable UUID id, @RequestBody Tag tag) {
+        // En una app real, mapearíamos el ID al objeto antes de guardar
+        return ResponseEntity.ok(service.save(tag));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+        service.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+}
+
+=== FILE: src/main/java/com/gestornotas/controller/ResourceController.java ===
+
+package com.gestornotas.controller;
+
+import com.gestornotas.model.entity.Resource;
+import com.gestornotas.service.ResourceService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/api/resources")
+public class ResourceController {
+    private final ResourceService service;
+
+    public ResourceController(ResourceService service) {
+        this.service = service;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Resource>> getAll() {
+        return ResponseEntity.ok(service.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Resource> getById(@PathVariable UUID id) {
+        return ResponseEntity.ok(service.findById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<Resource> create(@RequestBody Resource resource) {
+        return ResponseEntity.ok(service.save(resource));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Resource> update(@PathVariable UUID id, @RequestBody Resource resource) {
+        // En una app real, mapearíamos el ID al objeto antes de guardar
+        return ResponseEntity.ok(service.save(resource));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+        service.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+}
+
+=== FILE: src/main/java/com/gestornotas/service/PageContentBlockService.java ===
+
+package com.gestornotas.service;
+
+import com.gestornotas.model.entity.PageContentBlock;
+import com.gestornotas.repository.PageContentBlockRepository;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+public class PageContentBlockService {
+    private final PageContentBlockRepository repository;
+
+    public PageContentBlockService(PageContentBlockRepository repository) {
+        this.repository = repository;
+    }
+
+    public List<PageContentBlock> findAll() {
+        return repository.findAll();
+    }
+
+    public PageContentBlock findById(UUID id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("PageContentBlock no encontrado"));
+    }
+
+    public PageContentBlock save(PageContentBlock pageContentBlock) {
+        return repository.save(pageContentBlock);
+    }
+
+    public void deleteById(UUID id) {
+        repository.deleteById(id);
+    }
+}
+
+=== FILE: src/main/java/com/gestornotas/service/TagService.java ===
+
+package com.gestornotas.service;
+
+import com.gestornotas.model.entity.Tag;
+import com.gestornotas.repository.TagRepository;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+public class TagService {
+    private final TagRepository repository;
+
+    public TagService(TagRepository repository) {
+        this.repository = repository;
+    }
+
+    public List<Tag> findAll() {
+        return repository.findAll();
+    }
+
+    public Tag findById(UUID id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Tag no encontrado"));
+    }
+
+    public Tag save(Tag tag) {
+        return repository.save(tag);
+    }
+
+    public void deleteById(UUID id) {
+        repository.deleteById(id);
+    }
+}
+
+=== FILE: src/main/java/com/gestornotas/service/PageService.java ===
+
+package com.gestornotas.service;
+
+import com.gestornotas.model.entity.Page;
+import com.gestornotas.repository.PageRepository;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+public class PageService {
+    private final PageRepository repository;
+
+    public PageService(PageRepository repository) {
+        this.repository = repository;
+    }
+
+    public List<Page> findAll() {
+        return repository.findAll();
+    }
+
+    public Page findById(UUID id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Page no encontrado"));
+    }
+
+    public Page save(Page page) {
+        return repository.save(page);
+    }
+
+    public void deleteById(UUID id) {
+        repository.deleteById(id);
+    }
+}
+
+=== FILE: src/main/java/com/gestornotas/service/UserService.java ===
+
+package com.gestornotas.service;
+
+import com.gestornotas.model.entity.User;
+import com.gestornotas.repository.UserRepository;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+public class UserService {
+    private final UserRepository repository;
+
+    public UserService(UserRepository repository) {
+        this.repository = repository;
+    }
+
+    public List<User> findAll() {
+        return repository.findAll();
+    }
+
+    public User findById(UUID id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("User no encontrado"));
+    }
+
+    public User save(User user) {
+        return repository.save(user);
+    }
+
+    public void deleteById(UUID id) {
+        repository.deleteById(id);
+    }
+}
+
+=== FILE: src/main/java/com/gestornotas/service/SectionService.java ===
+
+package com.gestornotas.service;
+
+import com.gestornotas.model.entity.Section;
+import com.gestornotas.repository.SectionRepository;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+public class SectionService {
+    private final SectionRepository repository;
+
+    public SectionService(SectionRepository repository) {
+        this.repository = repository;
+    }
+
+    public List<Section> findAll() {
+        return repository.findAll();
+    }
+
+    public Section findById(UUID id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Section no encontrado"));
+    }
+
+    public Section save(Section section) {
+        return repository.save(section);
+    }
+
+    public void deleteById(UUID id) {
+        repository.deleteById(id);
+    }
+}
+
+=== FILE: src/main/java/com/gestornotas/service/NotebookService.java ===
+
+package com.gestornotas.service;
+
+import com.gestornotas.model.entity.Notebook;
+import com.gestornotas.repository.NotebookRepository;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+public class NotebookService {
+    private final NotebookRepository repository;
+
+    public NotebookService(NotebookRepository repository) {
+        this.repository = repository;
+    }
+
+    public List<Notebook> findAll() {
+        return repository.findAll();
+    }
+
+    public Notebook findById(UUID id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Notebook no encontrado"));
+    }
+
+    public Notebook save(Notebook notebook) {
+        return repository.save(notebook);
+    }
+
+    public void deleteById(UUID id) {
+        repository.deleteById(id);
+    }
+}
+
+=== FILE: src/main/java/com/gestornotas/service/SectionGroupService.java ===
+
+package com.gestornotas.service;
+
+import com.gestornotas.model.entity.SectionGroup;
+import com.gestornotas.repository.SectionGroupRepository;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+public class SectionGroupService {
+    private final SectionGroupRepository repository;
+
+    public SectionGroupService(SectionGroupRepository repository) {
+        this.repository = repository;
+    }
+
+    public List<SectionGroup> findAll() {
+        return repository.findAll();
+    }
+
+    public SectionGroup findById(UUID id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("SectionGroup no encontrado"));
+    }
+
+    public SectionGroup save(SectionGroup sectionGroup) {
+        return repository.save(sectionGroup);
+    }
+
+    public void deleteById(UUID id) {
+        repository.deleteById(id);
+    }
+}
+
+=== FILE: src/main/java/com/gestornotas/service/ResourceService.java ===
+
+package com.gestornotas.service;
+
+import com.gestornotas.model.entity.Resource;
+import com.gestornotas.repository.ResourceRepository;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+public class ResourceService {
+    private final ResourceRepository repository;
+
+    public ResourceService(ResourceRepository repository) {
+        this.repository = repository;
+    }
+
+    public List<Resource> findAll() {
+        return repository.findAll();
+    }
+
+    public Resource findById(UUID id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Resource no encontrado"));
+    }
+
+    public Resource save(Resource resource) {
+        return repository.save(resource);
+    }
+
+    public void deleteById(UUID id) {
+        repository.deleteById(id);
+    }
+}
+
+=== FILE: src/main/java/com/gestornotas/GestorNotasApplication.java ===
+
+package com.gestornotas;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class GestorNotasApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(GestorNotasApplication.class, args);
+    }
+}
+
+=== FILE: src/main/java/com/gestornotas/model/enums/ContentBlockType.java ===
+
+package com.gestornotas.model.enums;
+public enum ContentBlockType {
+    text, image, drawing, table, file_attachment, code_block, checkbox, list_item, audio, video, embed
+}
+
+=== FILE: src/main/java/com/gestornotas/model/enums/PermissionLevel.java ===
+
+package com.gestornotas.model.enums;
+public enum PermissionLevel {
+    read, edit, admin
+}
+
+=== FILE: src/main/java/com/gestornotas/model/entity/Tag.java ===
+
+package com.gestornotas.model.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+import org.hibernate.annotations.CreationTimestamp;
+
+@Entity
+@Table(name = "tags")
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+public class Tag {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "tag_id")
+    private UUID tagId;
+
+    @Column(name = "user_id")
+    private UUID userId;
+
+    @Column(nullable = false, length = 100)
+    private String name;
+
+    @Column(length = 7)
+    private String color;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private OffsetDateTime createdAt;
+}
+
+=== FILE: src/main/java/com/gestornotas/model/entity/Notebook.java ===
+
+package com.gestornotas.model.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+@Entity
+@Table(name = "notebooks")
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+public class Notebook {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "notebook_id")
+    private UUID notebookId;
+
+    @Column(name = "user_id", nullable = false)
+    private UUID userId;
+
+    @Column(nullable = false, length = 255)
+    private String name;
+
+    @Column(length = 7)
+    private String color;
+
+    @Column(name = "is_deleted")
+    private Boolean isDeleted = false;
+
+    @Column(name = "order_in_user", nullable = false)
+    private Integer orderInUser = 0;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private OffsetDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private OffsetDateTime updatedAt;
+}
+
+=== FILE: src/main/java/com/gestornotas/model/entity/PageContentBlock.java ===
+
+package com.gestornotas.model.entity;
+
+import com.gestornotas.model.enums.ContentBlockType;
+import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.Type;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+@Entity
+@Table(name = "page_content_blocks")
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+public class PageContentBlock {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "content_block_id")
+    private UUID contentBlockId;
+
+    @Column(name = "page_id", nullable = false)
+    private UUID pageId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, columnDefinition = "content_block_type")
+    private ContentBlockType type;
+
+    @Type(JsonBinaryType.class)
+    @Column(name = "content_data", columnDefinition = "jsonb", nullable = false)
+    private String contentData;
+
+    @Column(name = "x_position")
+    private Integer xPosition;
+
+    @Column(name = "y_position")
+    private Integer yPosition;
+
+    private Integer width;
+    private Integer height;
+
+    @Column(name = "z_index")
+    private Integer zIndex = 0;
+
+    @Column(name = "order_on_page", nullable = false)
+    private Integer orderOnPage = 0;
+
+    @Column(name = "last_modified_by_user_id")
+    private UUID lastModifiedByUserId;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private OffsetDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private OffsetDateTime updatedAt;
+}
+
+=== FILE: src/main/java/com/gestornotas/model/entity/SectionGroup.java ===
+
+package com.gestornotas.model.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+@Entity
+@Table(name = "section_groups")
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+public class SectionGroup {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "section_group_id")
+    private UUID sectionGroupId;
+
+    @Column(name = "notebook_id", nullable = false)
+    private UUID notebookId;
+
+    @Column(name = "parent_section_group_id")
+    private UUID parentSectionGroupId;
+
+    @Column(nullable = false, length = 255)
+    private String name;
+
+    @Column(name = "is_deleted")
+    private Boolean isDeleted = false;
+
+    @Column(name = "order_in_parent", nullable = false)
+    private Integer orderInParent = 0;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private OffsetDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private OffsetDateTime updatedAt;
+}
+
+=== FILE: src/main/java/com/gestornotas/model/entity/Resource.java ===
+
+package com.gestornotas.model.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+import org.hibernate.annotations.CreationTimestamp;
+
+@Entity
+@Table(name = "resources")
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+public class Resource {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "resource_id")
+    private UUID resourceId;
+
+    @Column(name = "user_id", nullable = false)
+    private UUID userId;
+
+    @Column(name = "file_name", nullable = false, length = 255)
+    private String fileName;
+
+    @Column(name = "mime_type", nullable = false, length = 100)
+    private String mimeType;
+
+    @Column(name = "file_size", nullable = false)
+    private Long fileSize;
+
+    @Column(name = "storage_path", nullable = false, length = 500)
+    private String storagePath;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private OffsetDateTime createdAt;
+}
+
+=== FILE: src/main/java/com/gestornotas/model/entity/Section.java ===
+
+package com.gestornotas.model.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+@Entity
+@Table(name = "sections")
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+public class Section {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "section_id")
+    private UUID sectionId;
+
+    @Column(name = "notebook_id", nullable = false)
+    private UUID notebookId;
+
+    @Column(name = "section_group_id")
+    private UUID sectionGroupId;
+
+    @Column(nullable = false, length = 255)
+    private String name;
+
+    @Column(length = 7)
+    private String color;
+
+    @Column(name = "is_deleted")
+    private Boolean isDeleted = false;
+
+    @Column(name = "order_in_parent", nullable = false)
+    private Integer orderInParent = 0;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private OffsetDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private OffsetDateTime updatedAt;
+}
+
+=== FILE: src/main/java/com/gestornotas/model/entity/User.java ===
+
+package com.gestornotas.model.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+@Entity
+@Table(name = "users")
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "user_id", updatable = false, nullable = false)
+    private UUID userId;
+
+    @Column(unique = true, nullable = false, length = 50)
+    private String username;
+
+    @Column(unique = true, nullable = false, length = 100)
+    private String email;
+
+    @Column(name = "password_hash", nullable = false, length = 255)
+    private String passwordHash;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private OffsetDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private OffsetDateTime updatedAt;
+}
+
+=== FILE: src/main/java/com/gestornotas/model/entity/Page.java ===
+
+package com.gestornotas.model.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+@Entity
+@Table(name = "pages")
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+public class Page {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "page_id")
+    private UUID pageId;
+
+    @Column(name = "section_id", nullable = false)
+    private UUID sectionId;
+
+    @Column(name = "parent_page_id")
+    private UUID parentPageId;
+
+    @Column(nullable = false, length = 255)
+    private String title;
+
+    @Column(name = "is_deleted")
+    private Boolean isDeleted = false;
+
+    @Column(name = "order_in_section", nullable = false)
+    private Integer orderInSection = 0;
+
+    @Column(name = "last_modified_by_user_id")
+    private UUID lastModifiedByUserId;
+
+    @Column(nullable = false)
+    private Integer version = 1;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private OffsetDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private OffsetDateTime updatedAt;
+}
+
+=== FILE: src/main/java/com/gestornotas/repository/UserRepository.java ===
+
+package com.gestornotas.repository;
+
+import com.gestornotas.model.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.UUID;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, UUID> {
+}
+
+=== FILE: src/main/java/com/gestornotas/repository/NotebookRepository.java ===
+
+package com.gestornotas.repository;
+
+import com.gestornotas.model.entity.Notebook;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.UUID;
+
+@Repository
+public interface NotebookRepository extends JpaRepository<Notebook, UUID> {
+}
+
+=== FILE: src/main/java/com/gestornotas/repository/SectionGroupRepository.java ===
+
+package com.gestornotas.repository;
+
+import com.gestornotas.model.entity.SectionGroup;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.UUID;
+
+@Repository
+public interface SectionGroupRepository extends JpaRepository<SectionGroup, UUID> {
+}
+
+=== FILE: src/main/java/com/gestornotas/repository/PageContentBlockRepository.java ===
+
+package com.gestornotas.repository;
+
+import com.gestornotas.model.entity.PageContentBlock;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.UUID;
+
+@Repository
+public interface PageContentBlockRepository extends JpaRepository<PageContentBlock, UUID> {
+}
+
+=== FILE: src/main/java/com/gestornotas/repository/TagRepository.java ===
+
+package com.gestornotas.repository;
+
+import com.gestornotas.model.entity.Tag;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.UUID;
+
+@Repository
+public interface TagRepository extends JpaRepository<Tag, UUID> {
+}
+
+=== FILE: src/main/java/com/gestornotas/repository/SectionRepository.java ===
+
+package com.gestornotas.repository;
+
+import com.gestornotas.model.entity.Section;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.UUID;
+
+@Repository
+public interface SectionRepository extends JpaRepository<Section, UUID> {
+}
+
+=== FILE: src/main/java/com/gestornotas/repository/PageRepository.java ===
+
+package com.gestornotas.repository;
+
+import com.gestornotas.model.entity.Page;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.UUID;
+
+@Repository
+public interface PageRepository extends JpaRepository<Page, UUID> {
+}
+
+=== FILE: src/main/java/com/gestornotas/repository/ResourceRepository.java ===
+
+package com.gestornotas.repository;
+
+import com.gestornotas.model.entity.Resource;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.UUID;
+
+@Repository
+public interface ResourceRepository extends JpaRepository<Resource, UUID> {
+}
