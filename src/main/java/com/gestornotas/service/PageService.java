@@ -26,6 +26,17 @@ public class PageService {
         return repository.save(page);
     }
 
+    public Page update(UUID id, Page pageDetails) {
+        // Buscamos la página original para no perder el sectionId
+        Page existingPage = findById(id);
+        
+        existingPage.setTitle(pageDetails.getTitle());
+        existingPage.setOrderInSection(pageDetails.getOrderInSection());
+        existingPage.setParentPageId(pageDetails.getParentPageId());
+        
+        return repository.save(existingPage);
+    }
+
     public void deleteById(UUID id) {
         repository.deleteById(id);
     }

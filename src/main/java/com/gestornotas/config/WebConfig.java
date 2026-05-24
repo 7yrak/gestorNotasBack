@@ -17,7 +17,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins(
                         "http://10.51.9.50",
                         "http://localhost",
-                        "http://127.0.0.1"
+                        "http://127.0.0.1",
+                        "http://localhost:4200"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
@@ -31,6 +32,7 @@ public class WebConfig implements WebMvcConfigurer {
         config.addAllowedOrigin("http://10.51.9.50");
         config.addAllowedOrigin("http://localhost");
         config.addAllowedOrigin("http://127.0.0.1");
+        config.addAllowedOrigin("http://localhost:4200");
         config.addAllowedHeader("*");
         config.addAllowedMethod("GET");
         config.addAllowedMethod("POST");

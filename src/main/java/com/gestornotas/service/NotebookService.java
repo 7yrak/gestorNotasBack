@@ -30,6 +30,16 @@ public class NotebookService {
         return repository.save(notebook);
     }
 
+    public Notebook update(UUID id, Notebook notebookDetails) {
+        Notebook existingNotebook = findById(id);
+        
+        existingNotebook.setName(notebookDetails.getName());
+        existingNotebook.setColor(notebookDetails.getColor());
+        existingNotebook.setOrderInUser(notebookDetails.getOrderInUser());
+        
+        return repository.save(existingNotebook);
+    }
+
     public void deleteById(UUID id) {
         repository.deleteById(id);
     }

@@ -33,8 +33,7 @@ public class SectionController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Section> update(@PathVariable UUID id, @RequestBody Section section) {
-        // En una app real, mapearíamos el ID al objeto antes de guardar
-        return ResponseEntity.ok(service.save(section));
+        return ResponseEntity.ok(service.update(id, section));
     }
 
     @DeleteMapping("/{id}")

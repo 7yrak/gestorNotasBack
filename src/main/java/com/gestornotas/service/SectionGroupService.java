@@ -26,6 +26,16 @@ public class SectionGroupService {
         return repository.save(sectionGroup);
     }
 
+    public SectionGroup update(UUID id, SectionGroup sectionGroupDetails) {
+        SectionGroup existingSectionGroup = findById(id);
+        
+        existingSectionGroup.setName(sectionGroupDetails.getName());
+        existingSectionGroup.setOrderInParent(sectionGroupDetails.getOrderInParent());
+        existingSectionGroup.setParentSectionGroupId(sectionGroupDetails.getParentSectionGroupId());
+        
+        return repository.save(existingSectionGroup);
+    }
+
     public void deleteById(UUID id) {
         repository.deleteById(id);
     }

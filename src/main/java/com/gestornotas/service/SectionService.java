@@ -26,6 +26,18 @@ public class SectionService {
         return repository.save(section);
     }
 
+    public Section update(UUID id, Section sectionDetails) {
+        // Buscamos la sección original para no perder datos clave como el notebookId
+        Section existingSection = findById(id);
+        
+        existingSection.setName(sectionDetails.getName());
+        existingSection.setColor(sectionDetails.getColor());
+        existingSection.setOrderInParent(sectionDetails.getOrderInParent());
+        existingSection.setSectionGroupId(sectionDetails.getSectionGroupId());
+        
+        return repository.save(existingSection);
+    }
+
     public void deleteById(UUID id) {
         repository.deleteById(id);
     }

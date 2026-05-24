@@ -33,7 +33,7 @@ public class NotebookController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Notebook> update(@PathVariable UUID id, @RequestBody Notebook notebook) {
-        return ResponseEntity.ok(service.save(notebook));
+        return ResponseEntity.ok(service.update(id, notebook));
     }
 
     @DeleteMapping("/{id}")

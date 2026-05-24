@@ -33,8 +33,7 @@ public class PageController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Page> update(@PathVariable UUID id, @RequestBody Page page) {
-        // En una app real, mapearíamos el ID al objeto antes de guardar
-        return ResponseEntity.ok(service.save(page));
+        return ResponseEntity.ok(service.update(id, page));
     }
 
     @DeleteMapping("/{id}")
