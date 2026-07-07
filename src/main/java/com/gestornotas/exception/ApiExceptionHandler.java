@@ -3,6 +3,7 @@ package com.gestornotas.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -24,6 +25,12 @@ public class ApiExceptionHandler {
         exception.getBindingResult().getFieldErrors()
                 .forEach(error -> fields.put(error.getField(), error.getDefaultMessage()));
         return response(HttpStatus.BAD_REQUEST, "La solicitud contiene datos inválidos", fields);
+    }
+
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<Map<String, Object>> handleStatus(ResponseStatusException exception) {
+        HttpStatus status = HttpStatus.valueOf(exception.getStatusCode().value());
+        return response(status, exception.getReason() == null ? "La solicitud no pudo completarse" : exception.getReason(), Map.of());
     }
 
     private ResponseEntity<Map<String, Object>> response(
