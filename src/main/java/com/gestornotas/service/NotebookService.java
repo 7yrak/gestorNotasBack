@@ -2,6 +2,7 @@ package com.gestornotas.service;
 
 import com.gestornotas.model.entity.Notebook;
 import com.gestornotas.repository.NotebookRepository;
+import com.gestornotas.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
@@ -23,7 +24,7 @@ public class NotebookService {
     }
 
     public Notebook findById(UUID id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("Notebook no encontrado"));
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cuaderno no encontrado"));
     }
 
     public Notebook save(Notebook notebook) {
@@ -33,14 +34,16 @@ public class NotebookService {
     public Notebook update(UUID id, Notebook notebookDetails) {
         Notebook existingNotebook = findById(id);
         
-        existingNotebook.setName(notebookDetails.getName());
-        existingNotebook.setColor(notebookDetails.getColor());
-        existingNotebook.setOrderInUser(notebookDetails.getOrderInUser());
+        if (notebookDetails.getName() != null) existingNotebook.setName(notebookDetails.getName().trim());
+        if (notebookDetails.getColor() != null) existingNotebook.setColor(notebookDetails.getColor());
+        if (notebookDetails.getOrderInUser() != null) existingNotebook.setOrderInUser(notebookDetails.getOrderInUser());
         
         return repository.save(existingNotebook);
     }
 
     public void deleteById(UUID id) {
-        repository.deleteById(id);
+        Notebook notebook = findById(id);
+        notebook.setIsDeleted(true);
+        repository.save(notebook);
     }
 }

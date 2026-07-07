@@ -9,6 +9,8 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "page_content_blocks")
@@ -20,14 +22,17 @@ public class PageContentBlock {
     private UUID contentBlockId;
 
     @Column(name = "page_id", nullable = false)
+    @NotNull(message = "La página es obligatoria")
     private UUID pageId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition = "content_block_type")
+    @NotNull(message = "El tipo de bloque es obligatorio")
     private ContentBlockType type;
 
     @Type(JsonBinaryType.class)
     @Column(name = "content_data", columnDefinition = "jsonb", nullable = false)
+    @NotBlank(message = "El contenido es obligatorio")
     private String contentData;
 
     @Column(name = "x_position")

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/pages")
@@ -27,7 +28,7 @@ public class PageController {
     }
 
     @PostMapping
-    public ResponseEntity<Page> create(@RequestBody Page page) {
+    public ResponseEntity<Page> create(@Valid @RequestBody Page page) {
         return ResponseEntity.ok(service.save(page));
     }
 
@@ -45,9 +46,6 @@ public class PageController {
     // Obtener las páginas de una sección específica
     @GetMapping("/section/{sectionId}")
     public ResponseEntity<List<Page>> getBySection(@PathVariable UUID sectionId) {
-        return ResponseEntity.ok(service.findAll().stream()
-                .filter(p -> sectionId.equals(p.getSectionId()) && !Boolean.TRUE.equals(p.getIsDeleted()))
-                .sorted((a,b) -> Integer.compare(a.getOrderInSection(), b.getOrderInSection()))
-                .toList());
+        return ResponseEntity.ok(service.findBySectionId(sectionId));
     }
 }

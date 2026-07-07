@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/sections")
@@ -27,7 +28,7 @@ public class SectionController {
     }
 
     @PostMapping
-    public ResponseEntity<Section> create(@RequestBody Section section) {
+    public ResponseEntity<Section> create(@Valid @RequestBody Section section) {
         return ResponseEntity.ok(service.save(section));
     }
 
@@ -44,9 +45,6 @@ public class SectionController {
     // Obtener secciones raíz de un cuaderno o dentro de un grupo específico
     @GetMapping("/notebook/{notebookId}")
     public ResponseEntity<List<Section>> getByNotebook(@PathVariable UUID notebookId) {
-        return ResponseEntity.ok(service.findAll().stream()
-                .filter(s -> notebookId.equals(s.getNotebookId()) && !Boolean.TRUE.equals(s.getIsDeleted()))
-                .sorted((a,b) -> Integer.compare(a.getOrderInParent(), b.getOrderInParent()))
-                .toList());
+        return ResponseEntity.ok(service.findByNotebookId(notebookId));
     }
 }

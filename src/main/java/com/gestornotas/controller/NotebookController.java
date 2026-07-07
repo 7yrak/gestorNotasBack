@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/notebooks")
@@ -27,7 +28,7 @@ public class NotebookController {
     }
 
     @PostMapping
-    public ResponseEntity<Notebook> create(@RequestBody Notebook notebook) {
+    public ResponseEntity<Notebook> create(@Valid @RequestBody Notebook notebook) {
         return ResponseEntity.ok(service.save(notebook));
     }
 

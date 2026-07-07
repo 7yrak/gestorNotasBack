@@ -6,6 +6,9 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "sections")
@@ -17,12 +20,15 @@ public class Section {
     private UUID sectionId;
 
     @Column(name = "notebook_id", nullable = false)
+    @NotNull(message = "El cuaderno es obligatorio")
     private UUID notebookId;
 
     @Column(name = "section_group_id")
     private UUID sectionGroupId;
 
     @Column(nullable = false, length = 255)
+    @NotBlank(message = "El nombre es obligatorio")
+    @Size(max = 255, message = "El nombre no puede superar 255 caracteres")
     private String name;
 
     @Column(length = 7)

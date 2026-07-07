@@ -6,6 +6,9 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "pages")
@@ -17,12 +20,15 @@ public class Page {
     private UUID pageId;
 
     @Column(name = "section_id", nullable = false)
+    @NotNull(message = "La sección es obligatoria")
     private UUID sectionId;
 
     @Column(name = "parent_page_id")
     private UUID parentPageId;
 
     @Column(nullable = false, length = 255)
+    @NotBlank(message = "El título es obligatorio")
+    @Size(max = 255, message = "El título no puede superar 255 caracteres")
     private String title;
 
     @Column(name = "is_deleted")

@@ -2,6 +2,7 @@ package com.gestornotas.service;
 
 import com.gestornotas.model.entity.Page;
 import com.gestornotas.repository.PageRepository;
+import com.gestornotas.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
@@ -18,8 +19,12 @@ public class PageService {
         return repository.findAll();
     }
 
+    public List<Page> findBySectionId(UUID sectionId) {
+        return repository.findBySectionIdAndIsDeletedFalseOrderByOrderInSectionAsc(sectionId);
+    }
+
     public Page findById(UUID id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("Page no encontrado"));
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Página no encontrada"));
     }
 
     public Page save(Page page) {
@@ -30,14 +35,20 @@ public class PageService {
         // Buscamos la página original para no perder el sectionId
         Page existingPage = findById(id);
         
-        existingPage.setTitle(pageDetails.getTitle());
-        existingPage.setOrderInSection(pageDetails.getOrderInSection());
-        existingPage.setParentPageId(pageDetails.getParentPageId());
+        if (pageDetails.getTitle() != null) existingPage.setTitle(pageDetails.getTitle().trim());
+        if (pageDetails.getOrderInSection() != null) existingPage.setOrderInSection(pageDetails.getOrderInSection());
+        if (pageDetails.getParentPageId() != null) existingPage.setParentPageId(pageDetails.getParentPageId());
+        if (pageDetails.getLastModifiedByUserId() != null) {
+            existingPage.setLastModifiedByUserId(pageDetails.getLastModifiedByUserId());
+        }
+        existingPage.setVersion(existingPage.getVersion() + 1);
         
         return repository.save(existingPage);
     }
 
     public void deleteById(UUID id) {
-        repository.deleteById(id);
+        Page page = findById(id);
+        page.setIsDeleted(true);
+        repository.save(page);
     }
 }
