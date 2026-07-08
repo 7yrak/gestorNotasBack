@@ -113,6 +113,7 @@ public class BackupService {
                     Page page = new Page();
                     page.setSectionId(section.getSectionId());
                     page.setTitle(requiredText(pageNode, "title"));
+                    page.setColor(validColorOr(pageNode, "color", section.getColor()));
                     page.setIsDeleted(false);
                     page.setOrderInSection(intOr(pageNode, "orderInSection", pageCount));
                     page.setLastModifiedByUserId(userId);
@@ -273,6 +274,11 @@ public class BackupService {
     private String textOr(JsonNode node, String field, String fallback) {
         String value = node.path(field).asText("").trim();
         return value.isEmpty() ? fallback : value;
+    }
+
+    private String validColorOr(JsonNode node, String field, String fallback) {
+        String value = textOr(node, field, fallback);
+        return value.matches("^#[0-9a-fA-F]{6}$") ? value : fallback;
     }
 
     private int intOr(JsonNode node, String field, int fallback) {

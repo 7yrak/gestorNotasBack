@@ -31,6 +31,9 @@ public class Page {
     @Size(max = 255, message = "El título no puede superar 255 caracteres")
     private String title;
 
+    @Column(length = 7, nullable = false)
+    private String color = "#5d9c91";
+
     @Column(name = "is_deleted")
     private Boolean isDeleted = false;
 

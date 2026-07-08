@@ -36,6 +36,9 @@ public class PageService {
         Page existingPage = findById(id);
         
         if (pageDetails.getTitle() != null) existingPage.setTitle(pageDetails.getTitle().trim());
+        if (pageDetails.getColor() != null && pageDetails.getColor().matches("^#[0-9a-fA-F]{6}$")) {
+            existingPage.setColor(pageDetails.getColor());
+        }
         if (pageDetails.getOrderInSection() != null) existingPage.setOrderInSection(pageDetails.getOrderInSection());
         if (pageDetails.getParentPageId() != null) existingPage.setParentPageId(pageDetails.getParentPageId());
         if (pageDetails.getLastModifiedByUserId() != null) {
