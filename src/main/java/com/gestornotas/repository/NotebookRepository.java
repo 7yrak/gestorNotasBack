@@ -9,4 +9,5 @@ import java.util.UUID;
 @Repository
 public interface NotebookRepository extends JpaRepository<Notebook, UUID> {
     List<Notebook> findByUserIdAndIsDeletedFalseOrderByOrderInUserAsc(UUID userId);
+    List<Notebook> findByUserId(UUID userId);
 }

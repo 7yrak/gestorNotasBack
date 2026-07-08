@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface PageRepository extends JpaRepository<Page, UUID> {
     List<Page> findBySectionIdAndIsDeletedFalseOrderByOrderInSectionAsc(UUID sectionId);
+    List<Page> findBySectionId(UUID sectionId);
 }

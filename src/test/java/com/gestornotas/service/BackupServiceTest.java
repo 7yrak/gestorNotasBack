@@ -22,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.UUID;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -51,6 +52,20 @@ class BackupServiceTest {
 
     @Test
     void importsHierarchyWithFreshIdentifiers() throws Exception {
+        UUID userId = UUID.randomUUID();
+        Notebook existingNotebook = new Notebook();
+        existingNotebook.setNotebookId(UUID.randomUUID());
+        Section existingSection = new Section();
+        existingSection.setSectionId(UUID.randomUUID());
+        Page existingPage = new Page();
+        existingPage.setPageId(UUID.randomUUID());
+        PageContentBlock existingBlock = new PageContentBlock();
+        existingBlock.setContentBlockId(UUID.randomUUID());
+
+        when(notebookRepository.findByUserId(userId)).thenReturn(List.of(existingNotebook));
+        when(sectionRepository.findByNotebookId(existingNotebook.getNotebookId())).thenReturn(List.of(existingSection));
+        when(pageRepository.findBySectionId(existingSection.getSectionId())).thenReturn(List.of(existingPage));
+        when(contentBlockRepository.findByPageIdOrderByOrderOnPageAsc(existingPage.getPageId())).thenReturn(List.of(existingBlock));
         when(notebookRepository.save(any())).thenAnswer(call -> withId(call.<Notebook>getArgument(0), UUID.randomUUID()));
         when(sectionRepository.save(any())).thenAnswer(call -> withId(call.<Section>getArgument(0), UUID.randomUUID()));
         when(pageRepository.save(any())).thenAnswer(call -> withId(call.<Page>getArgument(0), UUID.randomUUID()));
@@ -80,12 +95,16 @@ class BackupServiceTest {
                 }
                 """.formatted(oldNotebook, oldSection, oldPage));
 
-        BackupService.ImportResult result = service.importBackup(UUID.randomUUID(), backup);
+        BackupService.ImportResult result = service.importBackup(userId, backup);
 
         assertEquals(1, result.notebooks());
         assertEquals(1, result.sections());
         assertEquals(1, result.pages());
         assertEquals(1, result.contentBlocks());
+        verify(contentBlockRepository).deleteAll(List.of(existingBlock));
+        verify(pageRepository).deleteAll(List.of(existingPage));
+        verify(sectionRepository).deleteAll(List.of(existingSection));
+        verify(notebookRepository).deleteAll(List.of(existingNotebook));
         verify(contentBlockRepository).save(any(PageContentBlock.class));
     }
 

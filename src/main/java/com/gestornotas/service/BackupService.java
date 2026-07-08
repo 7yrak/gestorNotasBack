@@ -57,6 +57,7 @@ public class BackupService {
     @Transactional
     public ImportResult importBackup(UUID userId, JsonNode backup) {
         validateBackup(backup);
+        clearCurrentUserData(userId);
 
         Map<UUID, UUID> notebookIds = new HashMap<>();
         Map<UUID, UUID> groupIds = new HashMap<>();
@@ -156,6 +157,45 @@ public class BackupService {
         int tagCount = importTags(userId, backup.path("tags"));
         int resourceCount = importResources(userId, backup.path("resources"));
         return new ImportResult(notebookCount, sectionCount, pageCount, blockCount, tagCount, resourceCount);
+    }
+
+    private void clearCurrentUserData(UUID userId) {
+        List<Notebook> notebooks = notebookRepository.findByUserId(userId);
+
+        for (Notebook notebook : notebooks) {
+            List<Section> sections = sectionRepository.findByNotebookId(notebook.getNotebookId());
+            for (Section section : sections) {
+                List<Page> pages = pageRepository.findBySectionId(section.getSectionId());
+
+                // Las páginas pueden apuntarse entre sí. Primero se sueltan esas relaciones.
+                pages.forEach(page -> page.setParentPageId(null));
+                pageRepository.saveAll(pages);
+                pageRepository.flush();
+
+                for (Page page : pages) {
+                    contentBlockRepository.deleteAll(contentBlockRepository.findByPageIdOrderByOrderOnPageAsc(page.getPageId()));
+                }
+                contentBlockRepository.flush();
+                pageRepository.deleteAll(pages);
+                pageRepository.flush();
+            }
+            sectionRepository.deleteAll(sections);
+            sectionRepository.flush();
+
+            List<SectionGroup> groups = sectionGroupRepository.findByNotebookId(notebook.getNotebookId());
+            groups.forEach(group -> group.setParentSectionGroupId(null));
+            sectionGroupRepository.saveAll(groups);
+            sectionGroupRepository.flush();
+            sectionGroupRepository.deleteAll(groups);
+            sectionGroupRepository.flush();
+        }
+
+        notebookRepository.deleteAll(notebooks);
+        notebookRepository.flush();
+        tagRepository.deleteAll(tagRepository.findByUserId(userId));
+        tagRepository.flush();
+        resourceRepository.deleteAll(resourceRepository.findByUserId(userId));
+        resourceRepository.flush();
     }
 
     private int importTags(UUID userId, JsonNode nodes) {
