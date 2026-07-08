@@ -37,6 +37,11 @@ public class PageController {
         return ResponseEntity.ok(service.update(id, page));
     }
 
+    @PostMapping("/{id}/move")
+    public ResponseEntity<Page> move(@PathVariable UUID id, @RequestBody MovePageRequest request) {
+        return ResponseEntity.ok(service.move(id, request.targetSectionId(), request.targetIndex()));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         service.deleteById(id);
@@ -48,4 +53,6 @@ public class PageController {
     public ResponseEntity<List<Page>> getBySection(@PathVariable UUID sectionId) {
         return ResponseEntity.ok(service.findBySectionId(sectionId));
     }
+
+    public record MovePageRequest(UUID targetSectionId, int targetIndex) {}
 }
