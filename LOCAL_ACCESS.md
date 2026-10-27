@@ -32,3 +32,15 @@ sudo python3 scripts/configure_local_deployer.py
 El actualizador reconoce el bloque anterior exacto, respalda el instalador y cambia únicamente su validación de artefactos. Exige las clases del login local y conserva los controles de API privada. Rechaza un JAR antiguo o que mezcle KOVA y login local. No modifica servicios, credenciales ni bases. Si la versión del instalador es desconocida, no lo reemplaza.
 
 Después volver a ejecutar gestor-notas-build en Jenkins. Antes de probar el acceso, verificar el usuario propietario y su contraseña BCrypt según la configuración anterior.
+
+## Restablecer la contraseña olvidada
+
+En el servidor, con el artefacto de login local ya desplegado:
+
+```bash
+sudo python3 scripts/reset_local_password.py
+```
+
+El comando solicita la clave dos veces sin mostrarla. Verifica la cuenta tyrak y su UUID existente, genera BCrypt con las librerías del propio JAR y guarda únicamente el hash en /etc/gestor-notas-local-login.env con permisos root 600. Un drop-in de systemd carga ese archivo. La contraseña no se envía por argumentos ni se guarda en git.
+
+Reinicia solo gestor-notas-backend.service para aplicar la clave e invalidar sesiones anteriores. No modifica la base ni el contenido de las notas. Requiere Java con soporte de ejecución de fuentes, disponible en un JDK 11 o superior, y psql con acceso local del usuario postgres.
