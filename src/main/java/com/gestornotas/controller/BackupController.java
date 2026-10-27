@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
+import jakarta.servlet.http.HttpServletRequest;
+import com.gestornotas.security.NotesIdentity;
 
 @RestController
 @RequestMapping("/api/backups")
@@ -23,7 +25,8 @@ public class BackupController {
     @PostMapping("/import/{userId}")
     public ResponseEntity<BackupService.ImportResult> importBackup(
             @PathVariable UUID userId,
-            @RequestBody JsonNode backup) {
+            @RequestBody JsonNode backup,HttpServletRequest request) {
+        NotesIdentity.require(request,userId);
         return ResponseEntity.ok(backupService.importBackup(userId, backup));
     }
 }

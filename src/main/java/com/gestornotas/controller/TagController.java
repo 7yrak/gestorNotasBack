@@ -1,45 +1,28 @@
 package com.gestornotas.controller;
-
 import com.gestornotas.model.entity.Tag;
 import com.gestornotas.service.TagService;
+import com.gestornotas.security.NotesIdentity;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-@RestController
-@RequestMapping("/api/tags")
+@RestController @RequestMapping("/api/tags")
 public class TagController {
     private final TagService service;
-
-    public TagController(TagService service) {
-        this.service = service;
+    public TagController(TagService service){this.service=service;}
+    @GetMapping public ResponseEntity<List<Tag>> getAll(HttpServletRequest request){return ResponseEntity.ok(service.findAll().stream().filter(item->NotesIdentity.user(request).equals(item.getUserId())).toList());}
+    @GetMapping("/{id}") public ResponseEntity<Tag> getById(@PathVariable UUID id,HttpServletRequest request){
+        var item=service.findById(id);NotesIdentity.require(request,item.getUserId());return ResponseEntity.ok(item);
     }
-
-    @GetMapping
-    public ResponseEntity<List<Tag>> getAll() {
-        return ResponseEntity.ok(service.findAll());
+    @PostMapping public ResponseEntity<Tag> create(@RequestBody Tag body,HttpServletRequest request){
+        body.setUserId(NotesIdentity.user(request));return ResponseEntity.ok(service.save(body));
     }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Tag> getById(@PathVariable UUID id) {
-        return ResponseEntity.ok(service.findById(id));
+    @PutMapping("/{id}") public ResponseEntity<Tag> update(@PathVariable UUID id,@RequestBody Tag body,HttpServletRequest request){
+        NotesIdentity.require(request,service.findById(id).getUserId());body.setTagId(id);body.setUserId(NotesIdentity.user(request));return ResponseEntity.ok(service.save(body));
     }
-
-    @PostMapping
-    public ResponseEntity<Tag> create(@RequestBody Tag tag) {
-        return ResponseEntity.ok(service.save(tag));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Tag> update(@PathVariable UUID id, @RequestBody Tag tag) {
-        // En una app real, mapearíamos el ID al objeto antes de guardar
-        return ResponseEntity.ok(service.save(tag));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id) {
-        service.deleteById(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/{id}") public ResponseEntity<Void> delete(@PathVariable UUID id,HttpServletRequest request){
+        NotesIdentity.require(request,service.findById(id).getUserId());service.deleteById(id);return ResponseEntity.noContent().build();
     }
 }
