@@ -20,7 +20,7 @@ public class Notebook {
     private UUID notebookId;
 
     @Column(name = "user_id", nullable = false)
-    @NotNull(message = "El usuario es obligatorio")
+    // The owner is assigned from the authenticated KOVA binding.
     private UUID userId;
 
     @Column(nullable = false, length = 255)
