@@ -18,3 +18,17 @@ La migración V2 y su tabla histórica se conservan para respetar los checksums 
 ## Validación
 
 Con Java 21 ejecutar mvn -B -ntp package. Las pruebas de seguridad comprueban acceso anónimo, contraseña correcta e incorrecta, rechazo de otro usuario, CSRF, cierre e invalidación de sesión y conservación del propietario.
+
+## Instalador existente de Jenkins
+
+Si el despliegue muestra KOVA-only artifact required, el instalador del servidor conserva el guard anterior. La compilación puede haber pasado y el servicio anterior sigue funcionando.
+
+Aplicar una vez en el servidor, desde una copia actualizada de este repositorio:
+
+```bash
+sudo python3 scripts/configure_local_deployer.py
+```
+
+El actualizador reconoce el bloque anterior exacto, respalda el instalador y cambia únicamente su validación de artefactos. Exige las clases del login local y conserva los controles de API privada. Rechaza un JAR antiguo o que mezcle KOVA y login local. No modifica servicios, credenciales ni bases. Si la versión del instalador es desconocida, no lo reemplaza.
+
+Después volver a ejecutar gestor-notas-build en Jenkins. Antes de probar el acceso, verificar el usuario propietario y su contraseña BCrypt según la configuración anterior.
