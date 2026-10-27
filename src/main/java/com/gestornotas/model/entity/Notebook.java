@@ -20,7 +20,7 @@ public class Notebook {
     private UUID notebookId;
 
     @Column(name = "user_id", nullable = false)
-    // The owner is assigned from the authenticated KOVA binding.
+    // The owner is assigned from the authenticated local account.
     private UUID userId;
 
     @Column(nullable = false, length = 255)
