@@ -15,6 +15,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 @Configuration
 public class LocalSecurity {
+    @org.springframework.beans.factory.annotation.Value("${SHARED_PORTAL_KEY:}") private String sharedPortalKey;
+    @org.springframework.beans.factory.annotation.Autowired private org.springframework.beans.factory.ObjectProvider<LocalAccount> portalUsers;
+
     @Bean PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
 
     @Bean
@@ -36,6 +39,7 @@ public class LocalSecurity {
         http.exceptionHandling(errors -> errors.authenticationEntryPoint(
                 (request, response, error) -> response.setStatus(401)));
         http.addFilterBefore(new IdentityFilter(), AuthorizationFilter.class);
+        http.addFilterBefore(new SharedPortalFilter(sharedPortalKey,()->portalUsers.getObject().portalOwner()), org.springframework.security.web.authentication.logout.LogoutFilter.class);
         return http.build();
     }
 

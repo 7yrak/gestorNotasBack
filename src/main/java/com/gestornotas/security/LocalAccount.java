@@ -35,6 +35,11 @@ public class LocalAccount implements UserDetailsService {
         return new Principal(ownerId, owner.getUsername(), hash);
     }
 
+    public UserDetails portalOwner() {
+        return users.findById(ownerId).map(user -> loadUserByUsername(user.getUsername()))
+            .orElseThrow(() -> new UsernameNotFoundException("Owner unavailable"));
+    }
+
     public static final class Principal extends org.springframework.security.core.userdetails.User {
         private final UUID userId;
         public Principal(UUID userId, String username, String hash) {
