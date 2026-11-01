@@ -18,6 +18,6 @@ public class LocalSessionController {
 
     @GetMapping("/auth/session")
     Map<String, Object> session(HttpServletRequest request, Authentication authentication) {
-        return Map.of("legacyUserId", NotesIdentity.user(request), "username", authentication.getName());
+        return Map.of("legacyUserId", NotesIdentity.user(request), "username", request.getAttribute("shared.portal.username") instanceof String user ? user : authentication.getName());
     }
 }
