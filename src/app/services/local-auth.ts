@@ -62,6 +62,7 @@ export class LocalAuth {
   }
 
   logout() {
+    if (this.document.location.hostname === '7yrak-server.tail390d34.ts.net') { this.document.location.assign('https://7yrak-server.tail390d34.ts.net/auth/logout'); return; }
     this.loading.set(true);
     this.http.get<Csrf>(this.endpoint('auth/csrf')).pipe(
       switchMap(csrf => this.http.post(this.endpoint('auth/logout'), null, { headers: { [csrf.headerName]: csrf.token } }))
