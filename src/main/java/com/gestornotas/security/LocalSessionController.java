@@ -7,6 +7,7 @@ import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@org.springframework.context.annotation.Profile("!kova-customer")
 public class LocalSessionController {
     @GetMapping("/auth/csrf")
     Map<String, String> csrf(CsrfToken token) {

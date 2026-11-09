@@ -9,6 +9,19 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18.6
+        env:
+          POSTGRES_DB: notes_customer
+          POSTGRES_USER: kova_test
+          POSTGRES_PASSWORD: notes-ci-disposable-only
+        ports: ['15548:5432']
+        options: >-
+          --health-cmd "pg_isready -U kova_test -d notes_customer"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      KOVA_NOTES_TEST_DB_PASSWORD: notes-ci-disposable-only
     steps:
       - uses: actions/checkout@v7
         with:
