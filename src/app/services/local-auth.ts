@@ -7,6 +7,7 @@ import { isNotesApiRequest } from './api-routing';
 
 interface Csrf { headerName: string; token: string }
 interface Session { legacyUserId: string; username: string }
+interface Provider { provider: 'LOCAL'|'KOVA' }
 
 @Injectable({ providedIn: 'root' })
 export class LocalAuth {
@@ -39,6 +40,20 @@ export class LocalAuth {
   }
 
   check() {
+    this.http.get<Provider>(this.endpoint('auth/info')).subscribe({
+      next: info => { if (info.provider === 'KOVA') this.checkCustomer(); else this.checkLocal(); },
+      error: () => this.expire('No pudimos comprobar el acceso.')
+    });
+  }
+
+  private checkCustomer() {
+    this.http.get<Session>(this.endpoint('auth/session')).subscribe({
+      next: session => this.accept(session),
+      error: (error: HttpErrorResponse) => { if (error.status === 401) this.document.location.assign(this.endpoint('oauth2/authorization/kova')); else this.expire('Tu acceso no está disponible. Revisa tu suscripción en KOVA.'); }
+    });
+  }
+
+  private checkLocal() {
     this.http.get<Session>(this.endpoint('auth/session')).subscribe({
       next: session => this.accept(session),
       error: (error: HttpErrorResponse) => this.expire(error.status === 401 ? '' : 'No pudimos conectar con el servidor. Intenta nuevamente.')
@@ -62,12 +77,12 @@ export class LocalAuth {
   }
 
   logout() {
-    if (this.document.location.hostname === '7yrak-server.tail390d34.ts.net') { this.document.location.assign('https://7yrak-server.tail390d34.ts.net/auth/logout'); return; }
+    if (!this.document.location.pathname.startsWith('/apps/gestor-notas/') && this.document.location.hostname === '7yrak-server.tail390d34.ts.net') { this.document.location.assign('https://7yrak-server.tail390d34.ts.net/auth/logout'); return; }
     this.loading.set(true);
     this.http.get<Csrf>(this.endpoint('auth/csrf')).pipe(
       switchMap(csrf => this.http.post(this.endpoint('auth/logout'), null, { headers: { [csrf.headerName]: csrf.token } }))
     ).subscribe({
-      next: () => this.document.location.assign(this.base.toString()),
+      next: () => this.document.location.assign(this.base.pathname.startsWith('/apps/gestor-notas/') ? '/kova/portal' : this.base.toString()),
       error: () => { this.loading.set(false); this.message.set('No pudimos cerrar la sesión. Intenta nuevamente.'); }
     });
   }

@@ -24,7 +24,7 @@ import { StateService } from './services/state.service';
         <app-page-editor></app-page-editor>
       </main>
     } @else if (usingSharedPortal) {
-      <main class="local-access"><section class="login-form-panel"><div class="login-card"><h1>Gestor de Notas</h1><p role="status">{{ auth.loading() ? "Abriendo tu espacio…" : "Vuelve a tu cuenta para continuar." }}</p><a href="/gestor-notas/">Continuar con mi cuenta</a></div></section></main>
+      <main class="local-access"><section class="login-form-panel"><div class="login-card"><h1>Gestor de Notas</h1><p role="status">{{ auth.loading() ? "Abriendo tu espacio…" : "Vuelve a tu cuenta para continuar." }}</p><a [href]="customerSpace ? '/kova/portal' : '/gestor-notas/'">{{customerSpace ? 'Volver a Mis productos' : 'Continuar con mi cuenta'}}</a></div></section></main>
     } @else {
       <main class="local-access">
         <aside class="login-brand" aria-hidden="true">
@@ -91,7 +91,8 @@ import { StateService } from './services/state.service';
   `
 })
 export class AppComponent implements OnInit {
-  readonly usingSharedPortal = typeof window !== 'undefined' && window.location.hostname === '7yrak-server.tail390d34.ts.net';
+  readonly customerSpace = typeof window !== 'undefined' && /^\/apps\/gestor-notas\/gn-[a-f0-9]{32}\//.test(window.location.pathname);
+  readonly usingSharedPortal = this.customerSpace || typeof window !== 'undefined' && window.location.hostname === '7yrak-server.tail390d34.ts.net';
   readonly auth = inject(LocalAuth);
   username = '';
   password = '';

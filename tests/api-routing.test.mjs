@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { NOTES_API_PATH, isNotesApiRequest } from '../.test-build/api-routing.js';
+import { NOTES_API_PATH, notesApiPath, isNotesApiRequest } from '../.test-build/api-routing.js';
 
 const host = 'https://example.test';
 test('notebooks use the existing root API when the UI is installed in a subdirectory', () => {
@@ -32,4 +32,14 @@ test('CSRF routing excludes foreign origins, prefix collisions and authenticatio
 test('authentication retains the application prefix', () => {
   const base = new URL('./', host + '/gestor-notas/');
   assert.equal(new URL('auth/csrf', base).href, host + '/gestor-notas/auth/csrf');
+});
+
+const customerBase = host + '/apps/gestor-notas/gn-' + 'a'.repeat(32) + '/';
+test('commercial Notes APIs and CSRF remain inside their own customer route', () => {
+  const own = notesApiPath(customerBase);
+  assert.equal(own, new URL(customerBase).pathname + 'api');
+  assert.equal(isNotesApiRequest(own + '/notebooks', customerBase), true);
+  assert.equal(isNotesApiRequest('/api/notebooks', customerBase), false);
+  assert.equal(isNotesApiRequest('/apps/gestor-notas/gn-' + 'b'.repeat(32) + '/api/pages', customerBase), false);
+  assert.equal(new URL('auth/csrf', customerBase).pathname, new URL(customerBase).pathname + 'auth/csrf');
 });
