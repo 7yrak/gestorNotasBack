@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Configuration
+@org.springframework.context.annotation.Profile("!kova-customer")
 public class LocalSecurity {
     @org.springframework.beans.factory.annotation.Value("${SHARED_PORTAL_KEY:}") private String sharedPortalKey;
     @org.springframework.beans.factory.annotation.Autowired private org.springframework.beans.factory.ObjectProvider<LocalAccount> portalUsers;

@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 
 @Service
+@org.springframework.context.annotation.Profile("!kova-customer")
 public class LocalAccount implements UserDetailsService {
     private final UserRepository users;
     private final UUID ownerId;
