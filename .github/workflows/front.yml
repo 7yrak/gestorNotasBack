@@ -1,9 +1,11 @@
-name: Local access
+name: Front
 on:
   push:
     branches: [main, 'codex/**']
+    paths: ['front/**', '.github/workflows/front.yml']
   pull_request:
     branches: [main]
+    paths: ['front/**', '.github/workflows/front.yml']
 permissions:
   contents: read
 jobs:
@@ -19,6 +21,10 @@ jobs:
         with:
           node-version: '22'
           cache: npm
+          cache-dependency-path: front/package-lock.json
       - run: npm ci --no-audit --no-fund
+        working-directory: front
       - run: npm test
+        working-directory: front
       - run: npm run build -- --base-href=/gestor-notas/
+        working-directory: front
