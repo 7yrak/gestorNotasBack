@@ -1,15 +1,9 @@
-# gestorNotasBack
+# gestorNotas
 
-## Jenkins
+Gestor de notas (monorepo).
 
-Este repositorio incluye un `Jenkinsfile` con `triggers { githubPush() }` para que el job se ejecute cuando GitHub notifique un commit.
+- `back/`: API Spring Boot (Java 21, Maven).
+- `front/`: aplicación Angular.
 
-Configuracion necesaria:
-
-1. En Jenkins, crear o editar el job como Pipeline desde SCM usando este repositorio.
-2. Verificar que el agente Jenkins tenga disponibles `java` 21 y `mvn`.
-3. En el job, activar el uso del `Jenkinsfile` desde la rama `main`.
-4. En GitHub, agregar un webhook apuntando a `https://TU_JENKINS/github-webhook/`.
-5. En el webhook, seleccionar `Just the push event`.
-
-Con eso, cada push a GitHub gatilla el pipeline del backend.
+El historial completo de los repositorios originales (`gestorNotasBack` y `gestorNotasFront`)
+se conserva en este repositorio. La verificación automática está en `.github/workflows/`.

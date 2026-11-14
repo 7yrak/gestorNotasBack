@@ -1,9 +1,11 @@
-name: Local access
+name: Back
 on:
   push:
     branches: [main, 'codex/**']
+    paths: ['back/**', '.github/workflows/back.yml']
   pull_request:
     branches: [main]
+    paths: ['back/**', '.github/workflows/back.yml']
 permissions:
   contents: read
 jobs:
@@ -31,5 +33,8 @@ jobs:
           distribution: temurin
           java-version: '21'
           cache: maven
+          cache-dependency-path: back/pom.xml
       - run: python3 -m unittest discover -s scripts -p 'test_*.py'
+        working-directory: back
       - run: mvn -B -ntp package
+        working-directory: back
