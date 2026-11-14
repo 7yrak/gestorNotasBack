@@ -1,0 +1,30 @@
+name: Front
+on:
+  push:
+    branches: [main, 'codex/**']
+    paths: ['front/**', '.github/workflows/front.yml']
+  pull_request:
+    branches: [main]
+    paths: ['front/**', '.github/workflows/front.yml']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    env:
+      NG_CLI_ANALYTICS: 'false'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: front/package-lock.json
+      - run: npm ci --no-audit --no-fund
+        working-directory: front
+      - run: npm test
+        working-directory: front
+      - run: npm run build -- --base-href=/gestor-notas/
+        working-directory: front
